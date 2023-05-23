@@ -1,0 +1,9 @@
+저장소 만들기
+echo "# JavaStudy" >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git branch -M main
+git remote add origin https://github.com/kyunjun98/JavaStudy.git
+git push -u origin main
+
