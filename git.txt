@@ -1,0 +1,21 @@
+공통
+1. git init
+
+2. git remote add origin https://github.com/kyunjun98/Team2_Project.git
+
+3. git pull origin master
+
+4. git branch 닉네임
+
+5. git checkout 닉네임
+
+6. git push origin 닉네임
+
+
+
+
+브런치 확인
+git branch
+
+브런치 삭제
+git branch -d 닉네임
