@@ -1,0 +1,56 @@
+ALTER TABLE 고객 ADD PRIMARY KEY(고객아이디);
+
+-- 만들어진 테이블을 가지고 외래키를 만들자
+-- ALTER TABLE 테이블명 ADD CONSTRAINT FK명 FOREIGN KEY (컬럼명)
+-- REFERENCES PK가 위한 테이블명
+
+ALTER TABLE 주문 ADD CONSTRAINT FK_주문고객 FOREIGN KEY (주문고객)
+REFERENCES 고객(고객아이디);
+
+ALTER TABLE 주문 ADD CONSTRAINT FK_주문제품 FOREIGN KEY (주문제품)
+REFERENCES 제품(제품번호);
+
+-- FK를 적용하면 마음대로 삽입 / 삭제 할수 없다.
+-- 무결성 제약 조건에 위배 된다 - 부모키가 없습니다.
+INSERT INTO 주문 VALUES ('o11', 'banana2', 'p07', 15, '제주도','2023-05-06');
+INSERT INTO 주문 VALUES ('o12', 'melon', 'p07', 15, '제주도','2023-05-06');
+
+-- ORA-02292: 무결성 제약조건(C##KJUN.FK_주문고객)이 위배되었습니다- 자식 레코드가 발견되었습니다
+DELETE FROM 고객 WHERE 고객아이디 = 'apple';
+DELETE FROM 제품 WHERE 제품번호 = 'p03';
+
+-- 삭제가능: 주문테이블에서 참조하지 않았으므로 삭제 가능
+DELETE FROM 제품 WHERE 제품번호 = 'p05';
+
+-- 테이블 생성하면 외래키 만들기
+CREATE TABLE CLIENTINFO (
+    NAME VARCHAR2(20),
+    AGE NUMBER -- 나이는 0 보다 크고 150 보다는 작다 
+        CONSTRAINT CHECK_AGE CHECK(AGE > 0 AND AGE < 150),
+    GENDER VARCHAR2(3) -- 성별은 알파벳 M 또는 W로 입력 받는다.
+        CONSTRAINT CHECK_GENDER CHECK(GENDER IN('M', 'W')),
+    INFONO NUMBER -- 정보번호는 INFO 테이블의 기본키다.
+        CONSTRAINT PK_INFONO PRIMARY KEY
+);
+
+INSERT INTO CLIENTINFO VALUES('홍길동', 30, 'M', 1);
+INSERT INTO CLIENTINFO VALUES('홍숙이', 20, 'W', 2);
+INSERT INTO CLIENTINFO VALUES('김강', 25, 'M', 3);
+INSERT INTO CLIENTINFO VALUES('박홍길', 40, 'M', 4);
+INSERT INTO CLIENTINFO VALUES('원빈', 44, 'M', 5);
+INSERT INTO CLIENTINFO VALUES('이나영', 42, 'W', 6);
+
+INSERT INTO CLIENTINFO VALUES('1', 1231, 'W', 6);
+INSERT INTO CLIENTINFO VALUES('2', 2313, 'W', 6);
+INSERT INTO CLIENTINFO VALUES('3', 12312312, 'W', 6);
+
+-- 외래키를 만들 테이블
+CREATE TABLE CLIENTJOIN(
+    ID VARCHAR2(40) NOT NULL PRIMARY KEY,
+    PW VARCHAR2(40),
+    INFONO NUMBER CONSTRAINT FK_INFONO FOREIGN KEY(INFONO) REFERENCES CLINETINFO(INFONO)
+    );
+-- rownum: 오라클 내부에서 생성하는 가상 컬럼, SQL 조회 결과의 순번을 나타낸다.
+SELECT ROWNUM, K.* FROM (SELECT * FROM 고객) K WHERE ROWNUM BETWEEN 1 AND 3;
+
+COMMIT;

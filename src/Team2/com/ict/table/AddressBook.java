@@ -5,6 +5,7 @@ import java.awt.FlowLayout;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -14,8 +15,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
-public class Team2_table extends JFrame{
-	JPanel jp_write, jp_center, jp_funtion, jp_title, jp_select;
+public class AddressBook extends JFrame{
+	JPanel jp_write, jp_center, jp_funtion, jp_title, jp_select, jp_center_left;
 	JTable table;
 	JScrollPane sc;
 	JButton jb_insert, jb_delete, jb_update, jb_select, jb_eraser, jb_all;
@@ -23,11 +24,11 @@ public class Team2_table extends JFrame{
 	String[] select = {"이름", "전화", "주소", "회사"};
 	JComboBox<String> jcomb;
 	
-	public Team2_table() {
+	public AddressBook() {
 		super("Admin");
 		// 위
 		jp_title = new JPanel();
-		jp_title.add(new JLabel("dasdasdasd"));
+		jp_title.add(new JLabel("AddressBook"));
 		add(jp_title, BorderLayout.NORTH);
 		
 		// 가운데
@@ -38,32 +39,37 @@ public class Team2_table extends JFrame{
 		jtf_phone = new JTextField(10);
 		jtf_addr = new JTextField(10);
 		jtf_com = new JTextField(10);
-		
-		jp_write.add(new JLabel("I D: "));
-		jp_write.add(jtf_id);
-		jp_write.add(new JLabel("이 름: "));
-		jp_write.add(jtf_name);
-		jp_write.add(new JLabel("전 화: "));
-		jp_write.add(jtf_phone);
-		jp_write.add(new JLabel("주 소: "));
-		jp_write.add(jtf_addr);
-		jp_write.add(new JLabel("회 사: "));
-		jp_write.add(jtf_com);
-		jp_write.setLayout(new GridLayout(0,2));
+		jp_center_left = new JPanel();
+		jp_center_left.add(new JLabel("I D: "));
+		jp_center_left.add(jtf_id);
+		jp_center_left.add(new JLabel("이 름: "));
+		jp_center_left.add(jtf_name);
+		jp_center_left.add(new JLabel("전 화: "));
+		jp_center_left.add(jtf_phone);
+		jp_center_left.add(new JLabel("주 소: "));
+		jp_center_left.add(jtf_addr);
+		jp_center_left.add(new JLabel("회 사: "));
+		jp_center_left.add(jtf_com);
+		jp_center_left.setLayout(new GridLayout(0,2));
+		jp_write.add(jp_center_left, BorderLayout.SOUTH);
 		add(jp_write, BorderLayout.WEST);
 		
 		
-		String[] title = { "아이디", "이름", "전화", "주소", "회사"};
-		String[][] text = { { "1,", "aaaa", "a111", "12", "false" }, { "2,", "bbbb", "b111", "15", "true" },
-				{ "3,", "cccc", "c111", "18", "false" }, { "4,", "dddd", "d111", "10", "true" },{ "1,", "aaaa", "a111", "12", "false" }, { "2,", "bbbb", "b111", "15", "true" },
-				{ "3,", "cccc", "c111", "18", "false" }, { "4,", "dddd", "d111", "10", "true" } ,{ "1,", "aaaa", "a111", "12", "false" }, { "2,", "bbbb", "b111", "15", "true" },
-				{ "3,", "cccc", "c111", "18", "false" }, { "4,", "dddd", "d111", "10", "true" }  };
-
+		String[] title = { "ID", "Name", "Phone", "Address", "Company" };
+		String[][] text = { { "100", "dada", "010-111-2225", "seoul", "cj" },
+                { "101", "jeeho", "010-111-2225", "seoul", "asianaidt" },
+                { "102", "min", "010-111-2225", "seoul", "asianaidt" }, { "103", "song", "010-111-2225", "seoul", "cj" },
+                { "104", "tommy", "010-900-2245", "la", "samsung" }, { "105", "billy", "010-133-2300", "tokyo", "hyundai" },
+                { "106", "jane", "010-623-2035", "pusan", "lg" }, { "107", "mel", "010-155-5211", "tokyo", "lg" },
+                { "108", "bruce", "010-721-7800", "pusan", "cj" }, { "109", "neil", "010-451-3888", "seoul", "samsung" },
+                { "110", "mat", "010-112-2095", "la", "hyundai" }, { "111", "bong", "010-354-2332", "london", "asianaidt" },
+                { "112", "jin", "010-622-8360", "osaka", "cj" }, { "113", "jaja", "666666", "busan", "12asdasdsad" }, };
+		
 		jp_select = new JPanel();
 		table = new JTable(text, title);
 		sc = new JScrollPane(table);
 		table.setEnabled(false);
-		jp_select.add(table);
+		jp_select.add(sc);
 		
 		add(jp_select, BorderLayout.CENTER);
 		
@@ -94,6 +100,6 @@ public class Team2_table extends JFrame{
 		setVisible(true);
 	}
 	public static void main(String[] args) {
-		new Team2_table();
+		new AddressBook();
 	}
 }
