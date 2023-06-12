@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.mybatis.example.BlogMapper">
+	<!-- 
+	태그 : <태그 속성> 텍스트 </태그>
+	id속성 : 외부(DAO)에서 해당 태그를  지칭하는(호출하는) 이름, 중복안됨
+	resultType 속성 : 결과에 대한 속성(select문은 95% VO속성이다)
+		select문에서 집계함수를 사용하면 resultType int이다.
+	parameterType 속성 : #{컬럼명}의 자료형, 대부분 VO속성이다. ( VO 아니면 전달하는 변수의 자료형이다)
+	 <select id="" resultType=""></select>  <누르고 se입력후 ctrl+스페이스바
+	 <select id="" resultType="" parameterType=""></select>
+	 
+	 //resultType은 없다 이유는 무조건 int(숫자)
+	 <update id="" parameterType=""></update>
+	 <insert id="" parameterType=""></insert>
+	 <delete id="" parameterType=""></delete>
+	 -->
+	<select id="custList" resultType="Personal.com.ict.edu.mybatis2.VO">
+		select * from AddressBook order by id   <!-- ;(세미콜론은 안씀) -->
+	</select>
+	<!--  -->
+	<select id ="custOneId" parameterType="String" resultType="Personal.com.ict.edu.mybatis2.VO">
+		select * from AddressBook where id = #{id}
+	</select>
+	<select id ="custOneName" parameterType="String" resultType="Personal.com.ict.edu.mybatis2.VO">
+		select * from AddressBook where name = #{name}
+	</select>
+	<select id ="custOneAddr" parameterType="String" resultType="Personal.com.ict.edu.mybatis2.VO">
+		select * from AddressBook where addr = #{addr}
+	</select>
+	<select id ="custOnePhone" parameterType="String" resultType="Personal.com.ict.edu.mybatis2.VO">
+		select * from AddressBook where phone = #{phone}
+	</select>
+	<insert id="custIns" parameterType="Personal.com.ict.edu.mybatis2.VO">
+		insert into AddressBook(id, name, phone, addr, com)
+		values(#{id}, #{name}, #{phone}, #{addr}, #{com})
+	</insert>
+	<delete id="custDel" parameterType="Personal.com.ict.edu.mybatis2.VO">
+		delete from AddressBook where id = #{id}
+	</delete>
+	<update id="custUpdate" parameterType="Personal.com.ict.edu.mybatis2.VO">
+		update AddressBook set name = #{name}, phone = #{phone}, addr=#{addr}, com = #{com} 
+		where id=#{id}
+	</update>
+</mapper>

@@ -271,31 +271,115 @@ EXEC del_customer(14);
 -- WHERE 조건식
 -- 특징: WHERE 조건식을 사용하여 결과값이 하나만 나오게 하자
 --      나온 결과는 INTO 다음에 있는 저장변수에 저장하자
-DECLARE 
-v_name customer.name%TYPE;
+DECLARE
+  v_name customer.name%type;
+  v_phone customer.phone%type;
 BEGIN
-SELECT NAME INTO v_name
-FROM customer
-where custid = 2;
-dbms_output.put_line(v_name);
+    select name, phone into v_name, v_phone
+    from customer
+    where custid = 2;
+    dbms_output.put_line('customer name : ' || v_name);
+    dbms_output.put_line('customer phone : ' || v_phone);
 END;
 
-DECLARE 
-v_customer customer%rowtype;
+DECLARE
+ v_customer customer%rowtype;
 BEGIN
-SELECT * INTO v_customer
-FROM customer
-where custid = 2;
-dbms_output.put_line(v_customer.custid);
-dbms_output.put_line(v_customer.name);
-dbms_output.put_line(v_customer.address);
-dbms_output.put_line(v_customer.phone);
+    select * into v_customer
+    from customer
+    where custid = 2;
+    dbms_output.put_line('customer name : ' || v_customer.name);
+    dbms_output.put_line('customer phone : ' || v_customer.phone);
+    dbms_output.put_line('customer address : ' || v_customer.address);
+    dbms_output.put_line('customer custid : ' || v_customer.custid);
 END;
 
--- EXEC로 실행 안됨
--- EXEC AVG_PRICE();
+select * from customer ;
+
+-- customer 테이블에 데이터를 입력해서 같은 정보가 있으면 업데이터를 없으면 삽입을 하자 .
+-- ( 기본키는 시퀀스를 가지고 있어야 한다.)
+ 
+ create PROCEDURE chk_customer(
+   p_name in customer.name%type,
+   p_address in customer.address%type, 
+   p_phone in customer.phone%type
+   )as
+   cnt number ;
+ BEGIN
+   select count(*)
+   into cnt
+   from customer
+   where name=p_name  and phone=p_phone  ;
+   
+   if(cnt = 0)then
+      insert into customer(custid, name, address, phone)
+      values(customer_seq.nextval, p_name, p_address, p_phone);
+   else
+      update customer set name =?, address=?, phone=?  where name=p_name  and phone=p_phone ;
+   end if;   
+ END;
+ select * from customer;
+exec chk_customer('둘리','제주도','000-6000-0001');
+exec chk_customer('둘리','울릉도','000-1004-0001');
+
+-- out 를 이용해서 프로시져 결과를 내보내기 
+--  book 테이블에서 저장되어 있는 도서의 평균 가격을 반환하는 프로시져 
+select * from book ;
+select avg(price) from book ;
+
+create procedure avg_price(avg_val out number)as
+begin
+    select avg(price)
+    into avg_val
+    from book
+    where price is not null;
+end;
+
+-- exec 로 실행 안됨
+-- exec avg_price();
 -- 익명 프로시져로 실행 시킨다.
 DECLARE
-
+ a_val number;
 BEGIN
+  -- 미리만들어진 프로시져 호출
+  avg_price(a_val);
+  dbms_output.put_line('책 평균금액 : ' || trunc(a_val));
 END;
+
+--  bookid를 입력받아서 책이름, 가격을 출력하는 프로시져 (방법1)
+CREATE PROCEDURE book_test01(p_id book.bookid%TYPE, v_name OUT book.bookname%TYPE,
+v_price OUT book.price%TYPE) AS
+BEGIN
+SELECT bookname, price
+INTO v_name, v_price
+FROM book
+WHERE bookid = p_id;
+END;
+
+-- EXEC book_test01(3); 사용안됨
+
+-- 익명 프로시져
+SET SERVEROUTPUT ON;
+DECLARE
+k_book book.bookname%TYPE;
+k_price book.price%TYPE;
+BEGIN
+--프로시져를 호출
+book_test01(1, k_book, k_price);
+dbms_output.put_line(k_book);
+dbms_output.put_line(k_price);
+END;
+
+--  bookid를 입력받아서 책이름, 가격을 출력하는 프로시져 (방법2)
+CREATE PROCEDURE book_test2(v_id book.bookid%TYPE) AS
+v_name book.bookname%TYPE;
+v_price book.price%TYPE;
+BEGIN
+SELECT bookname, price
+INTO v_name, v_price
+FROM book
+WHERE bookid = v_id;
+dbms_output.put_line(k_name);
+dbms_output.put_line(k_price);
+END;
+EXEC book_test2(15);

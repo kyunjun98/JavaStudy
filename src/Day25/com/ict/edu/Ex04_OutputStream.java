@@ -12,7 +12,7 @@ import java.io.IOException;
 //               write(byte[] b) :  배열은 아스키코드의 배열이다.
 //               ** String 클래스에서 getBytes()를 이용해서 byte[]로 만들어서 사용 
 //               flush() : 버퍼 내용이 채워지지 않아도 출력하세 만듬
-//               close() : 출력 스트림 닫기
+//               close() : 출력 스트림 닫\
 
 public class Ex04_OutputStream {
 	public static void main(String[] args) {

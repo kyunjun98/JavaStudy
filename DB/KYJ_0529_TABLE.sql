@@ -37,7 +37,7 @@ orderid VARCHAR2(50) NOT NULL PRIMARY KEY,
 custid VARCHAR2(50) NOT NULL,
 bookid VARCHAR2(50) NOT NULL,
 saleprice NUMBER,
-orderdate VARCHAR2(50),
+orderdate DATE,
 FOREIGN KEY(custid) REFERENCES CUSTOMER(custid),
 FOREIGN KEY(bookid) REFERENCES BOOK(bookid)
 );
